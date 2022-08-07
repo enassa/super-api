@@ -7,8 +7,9 @@ var root = path.dirname(require.main.filename);
 const {
   // AUTH
   signUpUser,
+  confirmEmail,
   loginUser,
-  getUsers,
+  getElections,
   forgotPassword,
   resetPassword,
   verifyResetLink,
@@ -18,17 +19,16 @@ const {
   updateElection,
   deleteElection,
 } = require("../../controllers/election/electionController");
-
 // -----------------AUTH ROUTES-------------------
 
-const {} = require("../../controllers/users/userController");
 // login route
 router.post("/register", signUpUser);
+router.post("/confirm", confirmEmail);
 router.post("/login", loginUser);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
-router.get("/link/:email/:token", verifyResetLink);
-router.get("/list", getUsers);
+router.post("/link", verifyResetLink);
+router.get("/list", getElections);
 // sign up route
 
 // -------------------CRUD ROUTES---------------------

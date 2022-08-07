@@ -1,26 +1,36 @@
 // ---------------AUTH CONTROLLERS--------------
 // const res = require("express/lib/response");
-const User = require("../../models/users/userModel");
+const OrgSchema = require("../../models/election-model/electionModel");
 const jwt = require("jsonwebtoken");
 
 const createToken = (_id) => {
   console.log(process.env.SECRET);
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
 };
-const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+
+const signUpUser = async (req, res) => {
+  const { email, password, orgName, contact } = req.body;
   try {
-    const user = await User.login(email, password);
+    const election = await OrgSchema.register(
+      email,
+      password,
+      orgName,
+      contact,
+      req.socket.localPort
+    );
     // create token
-    const token = createToken(user._id);
+    const token = createToken(election._id);
 
     res.status(201).json({
-      message: "Login was successfull",
+      message: "Registeration was successfull",
       ok: true,
       success: true,
       token,
       data: {
-        email: user.email,
+        email: election.email,
+        orgName: election.orgName,
+        orgCode: election.orgCode,
+        contact: election.contact,
       },
     });
   } catch (error) {
@@ -31,13 +41,34 @@ const loginUser = async (req, res) => {
     });
   }
 };
-
-const signUpUser = async (req, res) => {
+const confirmEmail = async (req, res) => {
+  const { email, token } = req.body;
+  const decodedEmail = Buffer.from(email, "base64").toString("ascii");
+  try {
+    const election = await OrgSchema.confirmEmail(decodedEmail, token);
+    // create token
+    res.status(201).json({
+      message: "Your email has been confirmed succesfully",
+      ok: true,
+      success: true,
+      data: {
+        email: election.email,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+      ok: true,
+      success: false,
+    });
+  }
+};
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.register(email, password);
+    const election = await OrgSchema.login(email, password);
     // create token
-    const token = createToken(user._id);
+    const token = createToken(election._id);
 
     res.status(201).json({
       message: "Login was successfull",
@@ -45,7 +76,9 @@ const signUpUser = async (req, res) => {
       success: true,
       token,
       data: {
-        email: user.email,
+        email: election.email,
+        orgName: election.orgName,
+        orgCode: election.orgCode,
       },
     });
   } catch (error) {
@@ -60,17 +93,17 @@ const signUpUser = async (req, res) => {
 const forgotPassword = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.forgotPassword(
+    const election = await OrgSchema.forgotPassword(
       email,
       password,
       req.socket.localPort
     );
     res.status(201).json({
-      message: `A reset url has been sent to your email:${user.email}`,
+      message: `A reset url has been sent to your email:${election.email}`,
       ok: true,
       success: true,
       data: {
-        email: user.email,
+        email: election.email,
       },
     });
   } catch (error) {
@@ -85,7 +118,7 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   const { email, password, token } = req.body;
   try {
-    const response = await User.resetPassword(email, password, token);
+    const response = await OrgSchema.resetPassword(email, password, token);
     // create token
     res.status(201).json({
       message: "Your password has been reset succesfully",
@@ -105,19 +138,17 @@ const resetPassword = async (req, res) => {
 };
 
 const verifyResetLink = async (req, res) => {
-  const { email, token } = req.params;
+  const { email, token } = req.body;
   const decodedEmail = Buffer.from(email, "base64").toString("ascii");
   try {
-    const user = await User.verifyResetLink(decodedEmail);
+    const election = await OrgSchema.verifyResetLink(decodedEmail, token);
     // create token
-    const secret = process.env.SECRET + user.password;
-    const tokenValidity = jwt.verify(token, secret);
     res.status(201).json({
       message: "Link is valid",
       ok: true,
       success: true,
       data: {
-        email: user.email,
+        email: election.email,
       },
     });
   } catch (error) {
@@ -129,19 +160,10 @@ const verifyResetLink = async (req, res) => {
   }
 };
 
-const getUsers = async (req, res) => {
-  res.json({ message: "get user" });
-};
-
-// export const encodeToB64 = (string) => {
-//   return btoa(string);
-// };
-// export const decodeFromB64 = (string) => {
-//   return atob(string);
-// };
-
 // --------------CRUDE CONTROLLERS---------------
-
+const getElections = async (req, res) => {
+  res.json({ message: "get election" });
+};
 const castVote = async (req, res) => {
   res.json({ message: "cast vote" });
 };
@@ -160,8 +182,9 @@ const deleteElection = async (req, res) => {
 
 module.exports = {
   signUpUser,
+  confirmEmail,
   loginUser,
-  getUsers,
+  getElections,
   forgotPassword,
   verifyResetLink,
   resetPassword,

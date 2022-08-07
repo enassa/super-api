@@ -10,6 +10,13 @@ require("dotenv").config();
 mongoose.connect("mongodb://localhost/election");
 mongoose.Promise = global.Promise;
 
+// allow cors
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
+
 // Middle ware
 app.use(express.json());
 
