@@ -1,3 +1,4 @@
+// ---------------AUTH CONTROLLERS--------------
 // const res = require("express/lib/response");
 const User = require("../../models/users/userModel");
 const jwt = require("jsonwebtoken");
@@ -132,6 +133,31 @@ const getUsers = async (req, res) => {
   res.json({ message: "get user" });
 };
 
+// export const encodeToB64 = (string) => {
+//   return btoa(string);
+// };
+// export const decodeFromB64 = (string) => {
+//   return atob(string);
+// };
+
+// --------------CRUDE CONTROLLERS---------------
+
+const castVote = async (req, res) => {
+  res.json({ message: "cast vote" });
+};
+const createElection = async (req, res) => {
+  res.json({ message: "create election" });
+};
+const updateElection = async (req, res) => {
+  res.json({ message: "update elction" });
+};
+const getContestants = async (req, res) => {
+  res.json({ message: "get contestants" });
+};
+const deleteElection = async (req, res) => {
+  res.json({ message: "get contestants" });
+};
+
 module.exports = {
   signUpUser,
   loginUser,
@@ -139,10 +165,10 @@ module.exports = {
   forgotPassword,
   verifyResetLink,
   resetPassword,
+
+  castVote,
+  createElection,
+  updateElection,
+  getContestants,
+  deleteElection,
 };
-// export const encodeToB64 = (string) => {
-//   return btoa(string);
-// };
-// export const decodeFromB64 = (string) => {
-//   return atob(string);
-// };

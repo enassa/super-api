@@ -16,6 +16,7 @@ const ReportSchema = new Schema({
     required: [false, "Title is required"],
     default: null,
   },
+  timestamps: true,
 });
 // const Students = mongoose.model("student", StudentSchema);
 // module.exports = Students;

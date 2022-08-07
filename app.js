@@ -7,14 +7,14 @@ const app = express();
 require("dotenv").config();
 
 // CONNECT TO MONGOOSE
-mongoose.connect("mongodb://localhost/users");
+mongoose.connect("mongodb://localhost/election");
 mongoose.Promise = global.Promise;
 
 // Middle ware
 app.use(express.json());
 
 const userRoutes = require("./routes/users/userRoutes");
-const electionRoutes = require("./routes/voter/electionRoutes");
+const electionRoutes = require("./routes/election/electionRoutes");
 
 // INITIALIZE ROUTES
 app.use("/api/election", electionRoutes);
