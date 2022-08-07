@@ -1,38 +1,24 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const fileupload = require("express-fileupload");
 const cors = require("cors");
-
 // SET UP EXPRESS APP
 const app = express();
+require("dotenv").config();
 
 // CONNECT TO MONGOOSE
-mongoose.connect("mongodb://localhost/student");
+mongoose.connect("mongodb://localhost/users");
 mongoose.Promise = global.Promise;
-// console.log("--", conection.db);
-// const getConnection = async () => {
-//   conection.then((res) => {
-//     console.log("kkk", mongoose.res);
-//     return res;
-//   });
-// };
-// getConnection();
-// module.exports = () => {
-//   return getConnection();
-// };
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
 
-app.use(bodyParser.json());
-app.use(fileupload());
-const routes = require("./routes/studentRoutes");
+// Middle ware
+app.use(express.json());
+
+const userRoutes = require("./routes/users/userRoutes");
+const electionRoutes = require("./routes/voter/electionRoutes");
 
 // INITIALIZE ROUTES
-app.use("/api", routes);
+app.use("/api/election", electionRoutes);
+app.use("/api/user", userRoutes);
 
 // ERROR HANDLING
 app.use((error, req, res, next) => {
@@ -46,6 +32,10 @@ app.use((error, req, res, next) => {
 });
 
 // LISTEN FOR ROUTES
-app.listen(process.env.port || "3030", (req, res) => {
-  console.log("now listening");
+let counts = 0;
+const listener = app.listen(process.env.port || "3030", (req, res) => {
+  counts++;
+  console.log(
+    `now listening at port ${listener.address().port || "3030"} ${counts}`
+  );
 });
