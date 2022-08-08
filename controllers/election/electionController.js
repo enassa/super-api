@@ -91,11 +91,10 @@ const loginUser = async (req, res) => {
 };
 
 const forgotPassword = async (req, res) => {
-  const { email, password } = req.body;
+  const { email } = req.body;
   try {
     const election = await OrgSchema.forgotPassword(
       email,
-      password,
       req.socket.localPort
     );
     res.status(201).json({
@@ -152,7 +151,7 @@ const verifyResetLink = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(200).json({
       message: error.message,
       ok: true,
       success: false,

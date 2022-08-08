@@ -33,6 +33,10 @@ const OrgSchema = new Schema({
     required: true,
     unique: true,
   },
+  elections: {
+    type: Array,
+    required: false,
+  },
   token: {
     type: String,
     required: false,
@@ -57,27 +61,52 @@ const OrgSchema = new Schema({
 });
 
 const electionSchema = new Schema({
-  email: {
-    type: String,
+  Id: {
+    type: Number,
     required: true,
-    unique: true,
+    // unique: true,
   },
-  orgName: {
-    type: String,
-    required: true,
-  },
-  orgCode: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  token: {
+  DateCreated: {
     type: String,
     required: false,
   },
-  password: {
+  CreatedBy: {
+    type: String,
+    required: false,
+  },
+  Title: {
     type: String,
     required: true,
+  },
+  NumberOfVoters: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  TotalVoted: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  GeneralInfo: {
+    type: Object,
+    required: true,
+  },
+  ContestantDefinition: {
+    type: Object,
+    required: true,
+  },
+  Positions: {
+    type: Array,
+    required: false,
+  },
+  Contestants: {
+    type: Array,
+    required: false,
+  },
+  VoterIds: {
+    type: Array,
+    required: false,
   },
 });
 
@@ -130,7 +159,7 @@ OrgSchema.statics.register = async function (
     password: hashPassword,
   });
   // send reset url
-  const resetUrl = `http://localhost:${portNumber}/api/election/confirm/${Buffer.from(
+  const resetUrl = `http://localhost:${3000}/confirm/${Buffer.from(
     election.email
   ).toString("base64")}/${token}`;
 
@@ -141,7 +170,8 @@ OrgSchema.statics.register = async function (
     [election.email],
     "KoinoVote.org - Confirm your account",
     "Please click on the link below to confirm your email account",
-    `${getHtmlBody(election, resetUrl, "Confirm your email acount")}`
+    `${getHtmlBody(election, resetUrl, "Confirm your email acount")}`,
+    election.orgName
   );
 
   return election;
@@ -150,17 +180,17 @@ OrgSchema.statics.register = async function (
 // -------------------STATIC CONFIRM EMAIL METHOD--------------------
 OrgSchema.statics.confirmEmail = async function (email, token) {
   if (!email) {
-    throw Error("This link is incorrect");
+    throw Error("This link is invalid");
   }
 
   const election = await this.findOne({ email });
   if (!election) {
-    throw Error("This link is incorrect");
+    throw Error("This link is invalid");
   }
   const secret = process.env.SECRET + election.email + election.orgName;
   const tokenValidity = jwt.verify(token, secret);
   if (token !== election.confirmToken) {
-    throw Error("This link is incorrect");
+    throw Error("This link is invalid or expired");
   }
   const updateDoc = {
     $set: {
@@ -200,11 +230,7 @@ OrgSchema.statics.login = async function (email, password) {
 
 // -----------------------------------------------STATIC FORGOT PASSWORD METHOD-----------------------------------------------
 
-OrgSchema.statics.forgotPassword = async function (
-  email,
-  password,
-  portNumber
-) {
+OrgSchema.statics.forgotPassword = async function (email, portNumber) {
   // validate election info
   if (!email) {
     throw Error("All fields are required");
@@ -228,7 +254,7 @@ OrgSchema.statics.forgotPassword = async function (
   );
 
   // send reset url
-  const resetUrl = `http://localhost:${portNumber}/api/election/link/${Buffer.from(
+  const resetUrl = `http://localhost:${3000}/link/${Buffer.from(
     election.email
   ).toString("base64")}/${token}`;
 
@@ -239,7 +265,7 @@ OrgSchema.statics.forgotPassword = async function (
     ["assanicsone@gmail.com"],
     "KoinoVote - Password reset link",
     "This is the email text body",
-    `${getHtmlBody(election, resetUrl)}`
+    `${getHtmlBody(election, resetUrl, undefined, election?.orgName)}`
   );
   return { email: election.email, link: resetUrl };
 };
@@ -247,12 +273,12 @@ OrgSchema.statics.forgotPassword = async function (
 // -----------------------STATIC VERIFY RESET LINK METHOD-----------------------
 OrgSchema.statics.verifyResetLink = async function (email, token) {
   if (!email) {
-    throw Error("This link is incorrect");
+    throw Error("This link is invalid");
   }
 
   const election = await this.findOne({ email });
   if (!election) {
-    throw Error("This link is incorrect");
+    throw Error("This link is invalid");
   }
   // try {
   const secret = process.env.SECRET + election.password + election.orgCode;
@@ -272,7 +298,6 @@ OrgSchema.statics.verifyResetLink = async function (email, token) {
   // } catch (error) {
   //   throw Error("The link has expired");
   // }
-  console.log(result);
   return result;
 };
 
@@ -315,7 +340,6 @@ OrgSchema.statics.resetPassword = async function (email, password, token) {
     options
   );
 
-  console.log("Validity", result.token);
   return {
     email: result.email,
     message: "Your password has been reset succesfully",

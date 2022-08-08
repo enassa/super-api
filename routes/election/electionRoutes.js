@@ -26,7 +26,7 @@ router.post("/register", signUpUser);
 router.post("/confirm", confirmEmail);
 router.post("/login", loginUser);
 router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
+router.put("/reset-password", resetPassword);
 router.post("/link", verifyResetLink);
 router.get("/list", getElections);
 // sign up route

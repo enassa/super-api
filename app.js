@@ -21,10 +21,12 @@ app.use(
 app.use(express.json());
 
 const userRoutes = require("./routes/users/userRoutes");
-const electionRoutes = require("./routes/election/electionRoutes");
+const organizationRoutes = require("./routes/election/electionRoutes");
+const electionRoutes = require("./routes/election/electionCRUDRoutes");
 
 // INITIALIZE ROUTES
-app.use("/api/election", electionRoutes);
+app.use("/api/election", organizationRoutes);
+app.use("/api/elections", electionRoutes);
 app.use("/api/user", userRoutes);
 
 // ERROR HANDLING

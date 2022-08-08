@@ -13,7 +13,7 @@ const {
 router.post("/register", signUpUser);
 router.post("/login", loginUser);
 router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
+router.put("/reset-password", resetPassword);
 router.get("/link/:email/:token", verifyResetLink);
 router.get("/list", getUsers);
 // sign up route
