@@ -71,11 +71,15 @@ const ElectionSchema = new Schema({
   },
   Positions: {
     type: Array,
-    required: false,
+    required: true,
   },
   Contestants: {
     type: Array,
-    required: false,
+    required: true,
+  },
+  Results: {
+    type: Array,
+    required: true,
   },
   VotingLink: {
     type: String,
@@ -145,11 +149,13 @@ ElectionSchema.statics.createElection = async function (data) {
     organization.orgCode
   ).toString("base64")}/${electionId}/${token}`;
 
+  let Results = data?.Contestants;
   // create election
   const election = await this.create({
     ...data,
     Id: electionId,
     Password: hashedPassword,
+    Results,
     token: token,
     VotingLink: votingLink,
     ResultsLink: resultsLink,
@@ -169,6 +175,8 @@ ElectionSchema.statics.createElection = async function (data) {
     election,
   };
 };
+
+// ---------VERIFY VOTER ID ------------
 ElectionSchema.statics.verifyVoterId = async function (
   voterId,
   orgCode,
@@ -214,6 +222,118 @@ ElectionSchema.statics.verifyVoterId = async function (
       voterId: voterId,
       orgCode: election?.OrganizationId,
       electionId: election.Id,
+      Positions: election.Positions,
+      Title: election.Title,
+      token: election.token,
+      Contestants: election.Contestants,
+    },
+    token: election?.token,
+  };
+};
+
+// --------------- CAST VOTE ----------------------
+ElectionSchema.statics.castVote = async function (voterData) {
+  // validation
+  if (
+    !voterData?.voterId ||
+    !voterData?.orgCode ||
+    !voterData?.electionId ||
+    !voterData?.token ||
+    !voterData?.Votes
+  ) {
+    throw Error("All fields are required");
+  }
+
+  let { voterId, orgCode, electionId, token, Votes } = voterData;
+
+  // validate election id and org id
+  const election = await this.findOne({
+    Id: electionId,
+    OrganizationId: orgCode,
+  });
+
+  if (!election) {
+    throw Error(
+      "An unusual activity has been detected, extra security measures have been applied"
+    );
+  }
+
+  //validate token
+  if (token !== election?.token) {
+    throw Error(
+      "An unusual activity has been detected, extra security measures have been applied"
+    );
+  }
+  // validate voter ID
+  //is voter id used?
+
+  if (election?.UsedVoterIds?.includes(voterId)) {
+    throw Error("This voter id has been used");
+  }
+
+  //if it is not used, is it valid?
+  const indexOfVoterId = election?.VoterIds?.indexOf(voterId);
+  console.log(indexOfVoterId, voterId);
+  if (indexOfVoterId === -1) {
+    throw Error("Your voter id is invalid");
+  }
+  let totalVotesRecorded = parseInt(election?.TotalVoted) + 1;
+
+  // if (totalVotesRecorded > parseInt(election.NumberOfVoters)) {
+  //   throw Error("Maximum of number of voters has reached ");
+  // }
+
+  // process vote
+  // find the contestant that was voted for in results object and update the votesCount
+  let Contestants = election.Results;
+  for (var property in Votes) {
+    let castedVote = Votes[property] ?? {};
+    let indexOfContestant = await Contestants?.findIndex(
+      (item) => item.Id === castedVote.Id
+    );
+    let votedContestant = Contestants[indexOfContestant] ?? {};
+
+    if (votedContestant?.PositionId === castedVote?.PositionId) {
+      let newVoteCount = votedContestant?.VotesCount || 0 + 1;
+      let updatedVote = {
+        ...castedVote,
+        VotesCount: newVoteCount,
+      };
+      Contestants.splice(indexOfContestant, 1, updatedVote);
+    }
+  }
+  // Move  voterId from unused  to used
+  let unUsedVoterIds = election?.VoterIds;
+  unUsedVoterIds.mySwapDelete(indexOfVoterId);
+
+  let usedVoterIds = election?.UsedVoterIds;
+  usedVoterIds.push(voterId);
+
+  const updateDoc = {
+    $set: {
+      Results: Contestants,
+      VoterIds: unUsedVoterIds,
+      UsedVoterIds: usedVoterIds,
+      TotalVoted: totalVotesRecorded,
+    },
+  };
+  // upsert:false means do not create property if it does not exist
+  const options = { upsert: false };
+  const result = await this.findOneAndUpdate(
+    { Id: electionId },
+    updateDoc,
+    options
+  );
+  return { data: result };
+  return {
+    data: {
+      voterId: voterId,
+      orgCode: election?.OrganizationId,
+      electionId: election.Id,
+      Positions: election.Positions,
+      Title: election.Title,
+      token: election.token,
+      Contestants,
     },
     token: election?.token,
   };

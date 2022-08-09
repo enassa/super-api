@@ -7,6 +7,7 @@ var root = path.dirname(require.main.filename);
 const {
   createElection,
   verifyVoterId,
+  castVote,
 } = require("../../controllers/election/electionCRUDController");
 
 // -------------------CRUD ROUTES---------------------
@@ -14,7 +15,7 @@ router.post("/create", createElection);
 
 // ------voting handling
 router.post("/verify-voter", verifyVoterId);
-router.put("/vote", createElection);
+router.put("/vote", castVote);
 
 //------results handling
 

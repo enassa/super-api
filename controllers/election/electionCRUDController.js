@@ -36,6 +36,26 @@ const verifyVoterId = async (req, res) => {
       ok: true,
       success: true,
       token: voter?.token,
+      data: { ...voter?.data, orgCode },
+    });
+  } catch (error) {
+    res.status(200).json({
+      message: error.message,
+      ok: true,
+      success: false,
+    });
+  }
+};
+const castVote = async (req, res) => {
+  const { voteData } = req.body;
+  try {
+    const voter = await ElectionSchema.castVote(voteData);
+    // create token
+    res.status(201).json({
+      message: "Your vote has been recorded successfully",
+      ok: true,
+      success: true,
+      token: voter?.token,
       data: voter?.data,
     });
   } catch (error) {
@@ -49,4 +69,5 @@ const verifyVoterId = async (req, res) => {
 module.exports = {
   createElection,
   verifyVoterId,
+  castVote,
 };
