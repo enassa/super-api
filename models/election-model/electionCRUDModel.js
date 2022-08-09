@@ -18,7 +18,12 @@ const {
   generateShortId,
 } = require("../../constants");
 
+Array.prototype.mySwapDelete = function arrayMySwapDelete(index) {
+  this[index] = this[this.length - 1];
+  this.pop();
+};
 const OrgSchema = require("./electionModel");
+const { findById } = require("./electionModel");
 
 const ElectionSchema = new Schema({
   Id: {
@@ -84,6 +89,10 @@ const ElectionSchema = new Schema({
   },
   VoterIds: {
     type: Array,
+    required: true,
+  },
+  UsedVoterIds: {
+    type: Array,
     required: false,
   },
   token: {
@@ -130,7 +139,7 @@ ElectionSchema.statics.createElection = async function (data) {
   // send reset url
   const votingLink = `${process.env.WEBSITE_URL}/v/vote-login/${Buffer.from(
     organization.orgCode
-  ).toString("base64")}/${electionId}/${token}`;
+  ).toString("base64")}/${Buffer.from(electionId).toString("base64")}/${token}`;
 
   const resultsLink = `${process.env.WEBSITE_URL}/r/results-login/${Buffer.from(
     organization.orgCode
@@ -151,7 +160,7 @@ ElectionSchema.statics.createElection = async function (data) {
     "smtp.ethereal.email",
     "assanenathaniel@gmail.com",
     [election.OrganizationEmail],
-    "KoinoVote.org - Confirm your account",
+    "KoinoVote.org - Election Created Succesfully",
     "Please click on the link below to confirm your email account",
     `${getCreatedElectionBody(votingLink, resultsLink, election?.Title)}`
   );
@@ -160,7 +169,55 @@ ElectionSchema.statics.createElection = async function (data) {
     election,
   };
 };
+ElectionSchema.statics.verifyVoterId = async function (
+  voterId,
+  orgCode,
+  electionId,
+  token
+) {
+  // validation
+  if (!voterId || !orgCode || !electionId || !token) {
+    throw Error("All fields are required");
+  }
 
+  // validate election id and org id
+  const election = await this.findOne({
+    Id: electionId,
+    OrganizationId: orgCode,
+  });
+  if (!election) {
+    throw Error(
+      "An unusual activity has been detected, extra security measures have been applied"
+    );
+  }
+
+  //validate token
+  if (token !== election?.token) {
+    throw Error(
+      "An unusual activity has been detected, extra security measures have been applied"
+    );
+  }
+
+  // validate voter ID
+  //is voter id used?
+  if (election?.UsedVoterIds?.includes(voterId)) {
+    throw Error("This voter id has been used");
+  }
+
+  //if it is not used, is it valid?
+  if (!election?.VoterIds?.includes(voterId)) {
+    throw Error("Your voter id is invalid");
+  }
+
+  return {
+    data: {
+      voterId: voterId,
+      orgCode: election?.OrganizationId,
+      electionId: election.Id,
+    },
+    token: election?.token,
+  };
+};
 module.exports = mongoose.model("electionsModel", ElectionSchema);
 
 // const orgExists = await this.findOne({ orgName });

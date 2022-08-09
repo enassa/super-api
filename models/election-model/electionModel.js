@@ -275,7 +275,6 @@ OrgSchema.statics.verifyResetLink = async function (email, token) {
   if (!email) {
     throw Error("This link is invalid");
   }
-
   const election = await this.findOne({ email });
   if (!election) {
     throw Error("This link is invalid");
