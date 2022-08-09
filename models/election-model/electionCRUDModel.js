@@ -126,7 +126,7 @@ ElectionSchema.statics.createElection = async function (data) {
 
   // hash election password
   const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash("data?.Password", salt);
+  const hashedPassword = await bcrypt.hash(data?.Password, salt);
 
   // create confirm url
   const secret = process.env.SECRET + electionId + organization.orgCode;
@@ -147,7 +147,7 @@ ElectionSchema.statics.createElection = async function (data) {
 
   const resultsLink = `${process.env.WEBSITE_URL}/r/results-login/${Buffer.from(
     organization.orgCode
-  ).toString("base64")}/${electionId}/${token}`;
+  ).toString("base64")}/${Buffer.from(electionId).toString("base64")}/${token}`;
 
   let Results = data?.Contestants;
   // create election
@@ -168,7 +168,12 @@ ElectionSchema.statics.createElection = async function (data) {
     [election.OrganizationEmail],
     "KoinoVote.org - Election Created Succesfully",
     "Please click on the link below to confirm your email account",
-    `${getCreatedElectionBody(votingLink, resultsLink, election?.Title)}`
+    `${getCreatedElectionBody(
+      votingLink,
+      resultsLink,
+      election?.Title,
+      data?.Password
+    )}`
   );
 
   return {
@@ -325,6 +330,57 @@ ElectionSchema.statics.castVote = async function (voterData) {
     options
   );
   return { data: {} };
+};
+
+ElectionSchema.statics.loginToResulstScreen = async function (
+  password,
+  orgCode,
+  electionId,
+  token
+) {
+  // validation
+  if (!password || !orgCode || !electionId || !token) {
+    throw Error("All fields are required");
+  }
+
+  // validate election id and org id
+  const election = await this.findOne({
+    Id: electionId,
+    OrganizationId: orgCode,
+  });
+  if (!election) {
+    throw Error(
+      "An unusual activity has been detected, extra security measures have been applied"
+    );
+  }
+
+  //validate token
+  if (token !== election?.token) {
+    throw Error(
+      "An unusual activity has been detected, extra security measures have been applied"
+    );
+  }
+
+  // validate voter ID
+  //is voter id used?
+  const match = await bcrypt.compare(password, election?.Password);
+  if (!match) {
+    throw Error("Your password is incorrect");
+  }
+  // I return contestant property holding the result values but it holds the results
+  return {
+    data: {
+      orgCode: election?.OrganizationId,
+      electionId: election.Id,
+      Positions: election.Positions,
+      Title: election.Title,
+      token: election.token,
+      Contestants: election.Results,
+      TotalVoted: election?.TotalVoted,
+      NumberOfVoters: election?.NumberOfVoters,
+    },
+    token: election?.token,
+  };
 };
 module.exports = mongoose.model("electionsModel", ElectionSchema);
 

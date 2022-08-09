@@ -46,6 +46,31 @@ const verifyVoterId = async (req, res) => {
     });
   }
 };
+const loginToResulstScreen = async (req, res) => {
+  const { password, orgCode, electionId, token } = req.body;
+  try {
+    const voter = await ElectionSchema.loginToResulstScreen(
+      password,
+      orgCode,
+      electionId,
+      token
+    );
+    // create token
+    res.status(201).json({
+      message: "User verified successfully",
+      ok: true,
+      success: true,
+      token: voter?.token,
+      data: { ...voter?.data, orgCode },
+    });
+  } catch (error) {
+    res.status(200).json({
+      message: error.message,
+      ok: true,
+      success: false,
+    });
+  }
+};
 const castVote = async (req, res) => {
   const { voteData } = req.body;
   try {
@@ -70,4 +95,5 @@ module.exports = {
   createElection,
   verifyVoterId,
   castVote,
+  loginToResulstScreen,
 };

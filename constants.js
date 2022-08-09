@@ -4,7 +4,12 @@ const getHtmlBody = (user, resetUrl, header, name) => `<html><body>
 <p>Please click on the link below to reset your password. Please note that the link will expire in 15 minutes.</p>
 <p'> Reset your password:  ${resetUrl}</p>
 </body</html>`;
-const getCreatedElectionBody = (votinglink, resultsLink, electionTitle) => `
+const getCreatedElectionBody = (
+  votinglink,
+  resultsLink,
+  electionTitle,
+  password
+) => `
 <html>
   <body>
     <h1 style="color:green;">Election info</h1>
@@ -20,8 +25,12 @@ const getCreatedElectionBody = (votinglink, resultsLink, electionTitle) => `
       <strong>Results link:</strong>
       <span> ${resultsLink}</span>
     </div>
+    <div style="display:flex;">
+      <strong>Password to results page:</strong>
+      <span> ${password}</span>
+    </div>
   </body>
-</html>;
+</html>
 `;
 const getRandomStringKey = (limit = 5) => {
   return Math.random(0).toString();
