@@ -324,19 +324,7 @@ ElectionSchema.statics.castVote = async function (voterData) {
     updateDoc,
     options
   );
-  return { data: result };
-  return {
-    data: {
-      voterId: voterId,
-      orgCode: election?.OrganizationId,
-      electionId: election.Id,
-      Positions: election.Positions,
-      Title: election.Title,
-      token: election.token,
-      Contestants,
-    },
-    token: election?.token,
-  };
+  return { data: {} };
 };
 module.exports = mongoose.model("electionsModel", ElectionSchema);
 
