@@ -14,21 +14,23 @@ const app = express();
 require("dotenv").config();
 
 // CONNECT TO MONGOOSE
-// mongoose.connect("mongodb://localhost/election");
-// mongoose.Promise = global.Promise;
-const mongo = require("./mongo");
-const connectToMongoDb = async () => {
-  await mongo().then((mongoose) => {
-    try {
-      console.log("Connected to mongodb");
-    } catch (err) {
-      console.log(err);
-    } finally {
-      mongoose.connection.close();
-    }
-  });
-};
-connectToMongoDb();
+
+// const mongo = require("./mongo");
+// const connectToMongoDb = async () => {
+//   await mongo().then((mongoose) => {
+//     try {
+//       console.log("Connected to mongodb");
+//     } catch (err) {
+//       console.log(err);
+//     } finally {
+//       mongoose.connection.close();
+//     }
+//   });
+// };
+// connectToMongoDb();
+const { mongPath } = require("./constants");
+mongoose.connect(mongPath);
+mongoose.Promise = global.Promise;
 // allow cors
 app.use(
   cors({

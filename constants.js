@@ -114,9 +114,14 @@ const clientBaseUrl =
     ? "https://koinovoter.web.app"
     : "http://localhost:300";
 
+const password = "PdRuayEfXYBTsi7b";
+const mongPath = `mongodb+srv://enassan:${password}@koinovote.ww6hvut.mongodb.net/?retryWrites=true&w=majority`;
+
 module.exports = {
   clientBaseUrl,
   corsAcceptedUrls,
+  password,
+  mongPath,
   getHtmlBody,
   getRandomStringKey,
   getRandomInt,
