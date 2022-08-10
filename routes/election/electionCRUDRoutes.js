@@ -9,6 +9,7 @@ const {
   verifyVoterId,
   castVote,
   loginToResulstScreen,
+  getLatesResults,
 } = require("../../controllers/election/electionCRUDController");
 
 // -------------------CRUD ROUTES---------------------
@@ -20,6 +21,7 @@ router.put("/vote", castVote);
 
 //------results handling
 router.post("/results-login", loginToResulstScreen);
+router.post("/latest", getLatesResults);
 
 // router.put("/delete", confirmEmail);
 // router.post("/vote", loginUser);

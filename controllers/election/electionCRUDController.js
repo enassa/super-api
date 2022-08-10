@@ -71,6 +71,30 @@ const loginToResulstScreen = async (req, res) => {
     });
   }
 };
+const getLatesResults = async (req, res) => {
+  const { orgCode, electionId, token } = req.body;
+  try {
+    const voter = await ElectionSchema.getLatesResults(
+      orgCode,
+      electionId,
+      token
+    );
+    // create token
+    res.status(201).json({
+      message: "Latest results returned",
+      ok: true,
+      success: true,
+      token: voter?.token,
+      data: { ...voter?.data, orgCode },
+    });
+  } catch (error) {
+    res.status(200).json({
+      message: error.message,
+      ok: true,
+      success: false,
+    });
+  }
+};
 const castVote = async (req, res) => {
   const { voteData } = req.body;
   try {
@@ -96,4 +120,5 @@ module.exports = {
   verifyVoterId,
   castVote,
   loginToResulstScreen,
+  getLatesResults,
 };

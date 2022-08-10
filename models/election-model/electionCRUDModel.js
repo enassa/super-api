@@ -231,6 +231,7 @@ ElectionSchema.statics.verifyVoterId = async function (
       Title: election.Title,
       token: election.token,
       Contestants: election.Contestants,
+      ContestantDefinition: election.ContestantDefinition,
     },
     token: election?.token,
   };
@@ -299,7 +300,7 @@ ElectionSchema.statics.castVote = async function (voterData) {
     let votedContestant = Contestants[indexOfContestant] ?? {};
 
     if (votedContestant?.PositionId === castedVote?.PositionId) {
-      let newVoteCount = votedContestant?.VotesCount || 0 + 1;
+      let newVoteCount = votedContestant?.VotesCount + 1;
       let updatedVote = {
         ...castedVote,
         VotesCount: newVoteCount,
@@ -367,6 +368,52 @@ ElectionSchema.statics.loginToResulstScreen = async function (
   if (!match) {
     throw Error("Your password is incorrect");
   }
+  // I return contestant property holding the result values but it holds the results
+  return {
+    data: {
+      orgCode: election?.OrganizationId,
+      electionId: election.Id,
+      Positions: election.Positions,
+      Title: election.Title,
+      token: election.token,
+      Contestants: election.Results,
+      TotalVoted: election?.TotalVoted,
+      NumberOfVoters: election?.NumberOfVoters,
+    },
+    token: election?.token,
+  };
+};
+
+// ----------------Get latest results----------------------
+ElectionSchema.statics.getLatesResults = async function (
+  orgCode,
+  electionId,
+  token
+) {
+  // validation
+  console.log(orgCode, electionId, token);
+  if (!orgCode || !electionId || !token) {
+    throw Error("All fields are required");
+  }
+
+  // validate election id and org id
+  const election = await this.findOne({
+    Id: electionId,
+    OrganizationId: orgCode,
+  });
+  if (!election) {
+    throw Error(
+      "An unusual activity has been detected, extra security measures have been applied"
+    );
+  }
+
+  //validate token
+  if (token !== election?.token) {
+    throw Error(
+      "An unusual activity has been detected, extra security measures have been applied"
+    );
+  }
+
   // I return contestant property holding the result values but it holds the results
   return {
     data: {
