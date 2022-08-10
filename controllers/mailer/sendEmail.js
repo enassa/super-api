@@ -107,12 +107,6 @@ const sendEmailWithGoogle = function (
         subject: subject, // Subject line
         text: textBody, // plain text body
         html: htmlBody, // html body
-        attachments: [
-          {
-            filename: attachment?.fileName,
-            path: attachment?.filePath,
-          },
-        ],
       };
       const mailOptionWithAttachment = {
         from: senderEmail, // sender address
