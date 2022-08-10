@@ -16,6 +16,8 @@ const {
   getCreatedElectionBody,
   generateRandomNoDashes,
   generateShortId,
+  replaceSpaceWithUnderscore,
+  generateSuperShortId,
 } = require("../../constants");
 
 Array.prototype.mySwapDelete = function arrayMySwapDelete(index) {
@@ -24,7 +26,7 @@ Array.prototype.mySwapDelete = function arrayMySwapDelete(index) {
 };
 const OrgSchema = require("./electionModel");
 const { findById } = require("./electionModel");
-
+const { createComplexPdf } = require("../../utils/pdfMaker");
 const ElectionSchema = new Schema({
   Id: {
     type: String,
@@ -148,6 +150,11 @@ ElectionSchema.statics.createElection = async function (data) {
       expiresIn: "100d",
     }
   );
+  let fileName = `Voter_Ids_for_${replaceSpaceWithUnderscore(
+    data?.Title
+  )}_${generateSuperShortId()}`;
+
+  const voterIdFilePath = await createComplexPdf(data.VoterIds, fileName);
 
   // send reset url
   const votingLink = `${process.env.WEBSITE_URL}/v/vote-login/${Buffer.from(
@@ -182,7 +189,8 @@ ElectionSchema.statics.createElection = async function (data) {
       resultsLink,
       election?.Title,
       data?.Password
-    )}`
+    )}`,
+    { filePath: voterIdFilePath, fileName: "" }
   );
   delete election.Password;
   return {

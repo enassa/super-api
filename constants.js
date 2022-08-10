@@ -1,3 +1,6 @@
+const fs = require("fs");
+const Pdfmake = require("pdfmake");
+
 const getHtmlBody = (user, resetUrl, header, name) => `<html><body> 
 <h1 style='color:green'>Koinovote.org - ${header || "Password reset"}</h1>
 <p > Hi ${name || user.email},</p>
@@ -73,7 +76,40 @@ const generateSuperShortId = () => {
   return S4() + S4();
 };
 
+const createPdf = (pdfName) => {
+  var fonts = {
+    Roboto: {
+      normal: __dirname + "/fonts/roboto/Roboto-Regular.ttf",
+      bold: "fonts/roboto/Roboto-Medium.ttf",
+      italics: "fonts/roboto/Roboto-Italic.ttf",
+      bolditalics: "fonts/roboto/Roboto-MediumItalic.ttf",
+    },
+  };
+
+  let pdfmake = new Pdfmake(fonts);
+
+  let docDefination = {
+    content: ["Hello World!"],
+  };
+
+  let pdfDoc = pdfmake.createPdfKitDocument(docDefination, {});
+  pdfDoc.pipe(fs.createWriteStream(__dirname + `/pdfs/${pdfName}.pdf`));
+  pdfDoc.end();
+};
+const replaceSpaceWithUnderscore = (stringToReplace) => {
+  let results;
+  try {
+    results = stringToReplace.replace(/ /g, "_");
+  } catch {}
+  return results;
+};
+const clientUrls = [
+  "https://koinovoter.web.app",
+  "http://localhost:3000",
+  "http://localhost:5000",
+];
 module.exports = {
+  clientUrls,
   getHtmlBody,
   getRandomStringKey,
   getRandomInt,
@@ -83,4 +119,6 @@ module.exports = {
   generateSuperShortId,
   generateRandomNoDashes,
   getCreatedElectionBody,
+  createPdf,
+  replaceSpaceWithUnderscore,
 };

@@ -59,7 +59,7 @@ const sendEmailWithNodeMailer = async (
     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
   } catch (error) {}
 };
-
+// console.log(JSON.stringify(a));
 const CREDENTIALS = require("../../config/api-variables");
 const sendEmailWithGoogle = function (
   port,
@@ -68,7 +68,8 @@ const sendEmailWithGoogle = function (
   recipientEmails = [],
   subject,
   textBody,
-  htmlBody
+  htmlBody,
+  attachment
 ) {
   const { google } = require("googleapis");
   const nodemailer = require("nodemailer");
@@ -106,6 +107,12 @@ const sendEmailWithGoogle = function (
         subject: subject, // Subject line
         text: textBody, // plain text body
         html: htmlBody, // html body
+        attachments: [
+          {
+            filename: attachment?.fileName,
+            path: attachment?.filePath,
+          },
+        ],
       };
       const results = await transport.sendMail(mailOption);
       return results;
