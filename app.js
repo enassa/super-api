@@ -28,12 +28,11 @@ const connectToMongoDb = async () => {
     }
   });
 };
-await connectToMongoDb();
+connectToMongoDb();
 // allow cors
 app.use(
   cors({
-    origin: corsAcceptedUrls,
-    optionsSuccessStatus: 200,
+    origin: "*",
   })
 );
 // Middle ware
