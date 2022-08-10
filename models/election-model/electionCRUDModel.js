@@ -43,6 +43,14 @@ const ElectionSchema = new Schema({
     type: String,
     required: true,
   },
+  OrganizationId: {
+    type: String,
+    required: true,
+  },
+  OrganizationName: {
+    type: String,
+    required: true,
+  },
   CreatedBy: {
     type: String,
     required: false,
@@ -116,6 +124,7 @@ ElectionSchema.statics.createElection = async function (data) {
   const organization = await OrgSchema.findOne({
     orgCode: data?.OrganizationId,
   });
+
   if (!organization) {
     throw Error(
       "An unsual activity has been detected, Extra security measures have been applied"
@@ -175,7 +184,7 @@ ElectionSchema.statics.createElection = async function (data) {
       data?.Password
     )}`
   );
-
+  delete election.Password;
   return {
     election,
   };
@@ -427,6 +436,80 @@ ElectionSchema.statics.getLatesResults = async function (
       NumberOfVoters: election?.NumberOfVoters,
     },
     token: election?.token,
+  };
+};
+// -------------------------STATIC RESET PASSWORD METHOD-------------------------
+ElectionSchema.statics.getAllElections = async function (orgCode, token) {
+  // validation
+  console.log(orgCode, token);
+  if (!orgCode || !token) {
+    throw Error("All fields are required");
+  }
+  // check if organization exist
+  const organization = await OrgSchema.findOne({
+    orgCode,
+  });
+
+  if (!organization) {
+    throw Error(
+      "An unsual activity has been detected, Extra security measures have been applied"
+    );
+  }
+  // const query = { runtime: { $lt: 15 } };
+  // const options = {
+  //   // sort returned documents in ascending order by title (A->Z)
+  //   sort: { title: 1 },
+  //   // Include only the `title` and `imdb` fields in each returned document
+  //   projection: { _id: 0, title: 1, imdb: 1 },
+  // };
+  let allElections = await this.find({ OrganizationId: orgCode });
+  //validate token
+  if (!allElections) {
+    throw Error("Could not get elections list");
+  }
+  // I return contestant property holding the result values but it holds the results
+  return {
+    data: allElections,
+    token: token,
+  };
+};
+ElectionSchema.statics.getSingleElection = async function (
+  orgCode,
+  electionId,
+  token
+) {
+  // validation
+  console.log(orgCode, electionId, token);
+  if (!orgCode || !token) {
+    throw Error("All fields are required");
+  }
+  // check if organization exist
+  const organization = await OrgSchema.findOne({ orgCode });
+
+  if (!organization) {
+    throw Error(
+      "An unsual activity has been detected, Extra security measures have been applied"
+    );
+  }
+  // const query = { runtime: { $lt: 15 } };
+  // const options = {
+  //   // sort returned documents in ascending order by title (A->Z)
+  //   sort: { title: 1 },
+  //   // Include only the `title` and `imdb` fields in each returned document
+  //   projection: { _id: 0, title: 1, imdb: 1 },
+  // };
+  let singleElection = await this.findOne({
+    OrganizationId: orgCode,
+    Id: electionId,
+  });
+  //validate token
+  if (!singleElection) {
+    throw Error("Could not get election detail");
+  }
+  // I return contestant property holding the result values but it holds the results
+  return {
+    data: singleElection,
+    token: token,
   };
 };
 module.exports = mongoose.model("electionsModel", ElectionSchema);

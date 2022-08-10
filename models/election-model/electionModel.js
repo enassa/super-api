@@ -60,56 +60,6 @@ const OrgSchema = new Schema({
   },
 });
 
-const electionSchema = new Schema({
-  Id: {
-    type: Number,
-    required: true,
-    // unique: true,
-  },
-  DateCreated: {
-    type: String,
-    required: false,
-  },
-  CreatedBy: {
-    type: String,
-    required: false,
-  },
-  Title: {
-    type: String,
-    required: true,
-  },
-  NumberOfVoters: {
-    type: Number,
-    required: false,
-    default: 0,
-  },
-  TotalVoted: {
-    type: Number,
-    required: false,
-    default: 0,
-  },
-  GeneralInfo: {
-    type: Object,
-    required: true,
-  },
-  ContestantDefinition: {
-    type: Object,
-    required: true,
-  },
-  Positions: {
-    type: Array,
-    required: false,
-  },
-  Contestants: {
-    type: Array,
-    required: false,
-  },
-  VoterIds: {
-    type: Array,
-    required: false,
-  },
-});
-
 // ------------------------STATIC SIGNUP METHOD------------------------
 OrgSchema.statics.register = async function (
   email,
@@ -344,6 +294,7 @@ OrgSchema.statics.resetPassword = async function (email, password, token) {
     message: "Your password has been reset succesfully",
   };
 };
+
 module.exports = mongoose.model("electionModel", OrgSchema);
 
 // const orgExists = await this.findOne({ orgName });

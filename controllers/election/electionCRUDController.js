@@ -95,6 +95,50 @@ const getLatesResults = async (req, res) => {
     });
   }
 };
+const getAllElections = async (req, res) => {
+  const { orgCode, token } = req.body;
+  try {
+    const elections = await ElectionSchema.getAllElections(orgCode, token);
+    // create token
+    res.status(201).json({
+      message: "Obtained election list succesfully",
+      ok: true,
+      success: true,
+      token: elections?.token,
+      data: elections?.data,
+    });
+  } catch (error) {
+    res.status(200).json({
+      message: error.message,
+      ok: true,
+      success: false,
+    });
+  }
+};
+const getSingleElection = async (req, res) => {
+  const { orgCode, electionId, token } = req.body;
+  try {
+    const elections = await ElectionSchema.getSingleElection(
+      orgCode,
+      electionId,
+      token
+    );
+    // create token
+    res.status(201).json({
+      message: " Latest election detail obtained succesfully ",
+      ok: true,
+      success: true,
+      token: elections?.token,
+      data: elections?.data,
+    });
+  } catch (error) {
+    res.status(200).json({
+      message: error.message,
+      ok: true,
+      success: false,
+    });
+  }
+};
 const castVote = async (req, res) => {
   const { voteData } = req.body;
   try {
@@ -121,4 +165,6 @@ module.exports = {
   castVote,
   loginToResulstScreen,
   getLatesResults,
+  getAllElections,
+  getSingleElection,
 };
