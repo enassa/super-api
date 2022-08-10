@@ -28,8 +28,7 @@ const connectToMongoDb = async () => {
     }
   });
 };
-connectToMongoDb();
-
+await connectToMongoDb();
 // allow cors
 app.use(
   cors({
