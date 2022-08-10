@@ -30,6 +30,9 @@ app.use(express.json());
 app.use("/api/election", organizationRoutes);
 app.use("/api/elections", electionRoutes);
 app.use("/api/user", userRoutes);
+app.use("/", (req, res) => {
+  res.sendFile("./views/home.html", { root: __dirname });
+});
 
 // ERROR HANDLING
 app.use((error, req, res, next) => {
