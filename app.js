@@ -33,6 +33,7 @@ await connectToMongoDb();
 app.use(
   cors({
     origin: corsAcceptedUrls,
+    optionsSuccessStatus: 200,
   })
 );
 // Middle ware
