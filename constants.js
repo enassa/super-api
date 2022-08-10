@@ -103,13 +103,20 @@ const replaceSpaceWithUnderscore = (stringToReplace) => {
   } catch {}
   return results;
 };
-const clientUrls = [
+
+const corsAcceptedUrls = [
   "https://koinovoter.web.app",
   "http://localhost:3000",
   "http://localhost:5000",
 ];
+const clientBaseUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://koinovoter.web.app"
+    : "http://localhost:300";
+
 module.exports = {
-  clientUrls,
+  clientBaseUrl,
+  corsAcceptedUrls,
   getHtmlBody,
   getRandomStringKey,
   getRandomInt,

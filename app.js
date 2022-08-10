@@ -5,7 +5,7 @@ const cors = require("cors");
 const userRoutes = require("./routes/users/userRoutes");
 const organizationRoutes = require("./routes/election/electionRoutes");
 const electionRoutes = require("./routes/election/electionCRUDRoutes");
-const { createPdf, clientUrls } = require("./constants");
+const { createPdf, corsAcceptedUrls } = require("./constants");
 const { createComplexPdf } = require("./utils/pdfMaker");
 const { count } = require("./models/election-model/electionModel");
 
@@ -20,10 +20,9 @@ mongoose.Promise = global.Promise;
 // allow cors
 app.use(
   cors({
-    origin: clientUrls,
+    origin: corsAcceptedUrls,
   })
 );
-console.log(clientUrls);
 // Middle ware
 app.use(express.json());
 
@@ -45,7 +44,7 @@ app.use((error, req, res, next) => {
 
 // LISTEN FOR ROUTES
 let counts = 0;
-const listener = app.listen(process.env.port || "3030", (req, res) => {
+const listener = app.listen(process.env.PORT || "3030", (req, res) => {
   // createComplexPdf(["fdfdf", "fdsfsd", "dfdsfsds"], `name${counts}`);
   console.log(`now listening at port ${listener.address().port || "3030"}`);
   counts++;

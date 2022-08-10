@@ -18,6 +18,7 @@ const {
   generateShortId,
   replaceSpaceWithUnderscore,
   generateSuperShortId,
+  clientBaseUrl,
 } = require("../../constants");
 
 Array.prototype.mySwapDelete = function arrayMySwapDelete(index) {
@@ -155,13 +156,12 @@ ElectionSchema.statics.createElection = async function (data) {
   )}_${generateSuperShortId()}`;
 
   const voterIdFilePath = await createComplexPdf(data.VoterIds, fileName);
-
   // send reset url
-  const votingLink = `${process.env.WEBSITE_URL}/v/vote-login/${Buffer.from(
+  const votingLink = `${clientBaseUrl}/v/vote-login/${Buffer.from(
     organization.orgCode
   ).toString("base64")}/${Buffer.from(electionId).toString("base64")}/${token}`;
 
-  const resultsLink = `${process.env.WEBSITE_URL}/r/results-login/${Buffer.from(
+  const resultsLink = `${clientBaseUrl}/r/results-login/${Buffer.from(
     organization.orgCode
   ).toString("base64")}/${Buffer.from(electionId).toString("base64")}/${token}`;
 
