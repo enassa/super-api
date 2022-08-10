@@ -8,7 +8,7 @@ const {
   sendEmailWithNodeMailer,
   sendEmailWithGoogle,
 } = require("../../controllers/mailer/sendEmail");
-const { getHtmlBody } = require("../../constants");
+const { getHtmlBody, clientBaseUrl } = require("../../constants");
 
 const userSchema = new Schema({
   email: {
@@ -86,7 +86,7 @@ userSchema.statics.forgotPassword = async function (
   });
 
   // send reset url
-  const resetUrl = `http://localhost:${portNumber}/api/user/link/${Buffer.from(
+  const resetUrl = `${clientBaseUrl}/api/user/link/${Buffer.from(
     user.email
   ).toString("base64")}/${token}`;
 

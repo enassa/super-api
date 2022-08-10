@@ -110,7 +110,7 @@ OrgSchema.statics.register = async function (
     password: hashPassword,
   });
   // send reset url
-  const resetUrl = `http://localhost:${3000}/confirm/${Buffer.from(
+  const resetUrl = `${clientBaseUrl}/confirm/${Buffer.from(
     election.email
   ).toString("base64")}/${token}`;
 
