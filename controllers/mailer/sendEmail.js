@@ -101,7 +101,7 @@ const sendEmailWithGoogle = function (
           // "ya29.A0AVA9y1vW43niLN6rRhnj1ofKPTG4P5Us3DrTNBHVTEQrr6FY9cxZhYRfZExSH3TlQXtnsmLSjf3_mDhWANzv03agsVZL439fgMA9NRWihWRqyAFFGpEpinMc7xIW3mFZ7RQeD1QMus_J1u9ZgyazvViCv7VgaCgYKATASATASFQE65dr8bdh3k1NgsiyHRE2RXX1wUg0163",
         },
       });
-      const mailOption = {
+      const mailOptionNoAttachment = {
         from: senderEmail, // sender address
         to: `${recipientEmails.join()}`, // list of receivers
         subject: subject, // Subject line
@@ -114,7 +114,22 @@ const sendEmailWithGoogle = function (
           },
         ],
       };
-      const results = await transport.sendMail(mailOption);
+      const mailOptionWithAttachment = {
+        from: senderEmail, // sender address
+        to: `${recipientEmails.join()}`, // list of receivers
+        subject: subject, // Subject line
+        text: textBody, // plain text body
+        html: htmlBody, // html body
+        attachments: [
+          {
+            filename: attachment?.fileName,
+            path: attachment?.filePath,
+          },
+        ],
+      };
+      const results = await transport.sendMail(
+        !!attachment ? mailOptionWithAttachment : mailOptionNoAttachment
+      );
       return results;
     } catch (error) {
       // console.log("====", error);

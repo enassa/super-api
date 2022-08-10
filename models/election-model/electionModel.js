@@ -12,6 +12,7 @@ const {
   getHtmlBody,
   getRandomStringKey,
   getRandomInt,
+  clientBaseUrl,
 } = require("../../constants");
 
 const OrgSchema = new Schema({
@@ -204,7 +205,7 @@ OrgSchema.statics.forgotPassword = async function (email, portNumber) {
   );
 
   // send reset url
-  const resetUrl = `http://localhost:${3000}/link/${Buffer.from(
+  const resetUrl = `${clientBaseUrl}/link/${Buffer.from(
     election.email
   ).toString("base64")}/${token}`;
 
