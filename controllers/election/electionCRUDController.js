@@ -21,6 +21,26 @@ const createElection = async (req, res) => {
     });
   }
 };
+const resetElection = async (req, res) => {
+  const { electionData, Id } = req.body;
+  try {
+    const election = await ElectionSchema.resetElection(electionData, Id);
+    // create token
+    res.status(201).json({
+      message: "Election was reset  successfully",
+      ok: true,
+      success: true,
+      token: election?.token,
+      data: election,
+    });
+  } catch (error) {
+    res.status(200).json({
+      message: error.message,
+      ok: true,
+      success: false,
+    });
+  }
+};
 const verifyVoterId = async (req, res) => {
   const { voterId, orgCode, electionId, token } = req.body;
   try {
@@ -167,4 +187,5 @@ module.exports = {
   getLatesResults,
   getAllElections,
   getSingleElection,
+  resetElection,
 };

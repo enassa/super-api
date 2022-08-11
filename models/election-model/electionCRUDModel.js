@@ -118,7 +118,7 @@ const ElectionSchema = new Schema({
 
 // ------------------------STATIC SIGNUP METHOD------------------------
 ElectionSchema.statics.createElection = async function (data) {
-  console.log(data);
+  // console.log(data);
   // Validation
   if (!data) {
     throw Error("All fields are required");
@@ -195,6 +195,77 @@ ElectionSchema.statics.createElection = async function (data) {
   delete election.Password;
   return {
     election,
+  };
+};
+ElectionSchema.statics.resetElection = async function (data, Id) {
+  // console.log("org Id", data?.Id, Id);
+  // Validation
+  if (!data) {
+    throw Error("All fields are required");
+  }
+  // check if organization exist
+  const organization = await OrgSchema.findOne({
+    orgCode: data?.OrganizationId,
+  });
+
+  if (!organization) {
+    throw Error("Couldn't find organization");
+  }
+
+  let fileName = `Voter_Ids_for_${replaceSpaceWithUnderscore(
+    data?.Title
+  )}_${generateSuperShortId()}`;
+
+  const voterIdFilePath = await createComplexPdf(data.VoterIds, fileName);
+  // send reset url
+  const votingLink = `${clientBaseUrl}/v/vote-login/${Buffer.from(
+    organization.orgCode
+  ).toString("base64")}/${Buffer.from(data?.Id).toString("base64")}/${
+    data?.token
+  }`;
+
+  const resultsLink = `${clientBaseUrl}/r/results-login/${Buffer.from(
+    organization.orgCode
+  ).toString("base64")}/${Buffer.from(data?.Id).toString("base64")}/${
+    data?.token
+  }`;
+
+  let Results = data?.Contestants;
+  // create election
+  // Move  voterId from unused  to used
+  let unUsedVoterIds = [];
+  let usedVoterIds = data?.VoterIds;
+
+  const updateDoc = {
+    $set: {
+      Results: Results,
+      VoterIds: unUsedVoterIds,
+      UsedVoterIds: usedVoterIds,
+      TotalVoted: 0,
+    },
+  };
+  // upsert:false means do not create property if it does not exist
+  const options = { upsert: false };
+  const result = await this.findOneAndUpdate({ Id: Id }, updateDoc, options);
+
+  sendEmailWithGoogle(
+    null,
+    "smtp.ethereal.email",
+    "assanenathaniel@gmail.com",
+    [result?.OrganizationEmail],
+    "KoinoVote.org - Election Created Succesfully",
+    "Please click on the link below to confirm your email account",
+    `${getCreatedElectionBody(
+      votingLink,
+      resultsLink,
+      data?.Title,
+      data?.Password
+    )}`,
+    { filePath: voterIdFilePath, fileName: "" }
+  );
+  delete result?.Password;
+  return {
+    election: result,
   };
 };
 
@@ -296,7 +367,7 @@ ElectionSchema.statics.castVote = async function (voterData) {
 
   //if it is not used, is it valid?
   const indexOfVoterId = election?.VoterIds?.indexOf(voterId);
-  console.log(indexOfVoterId, voterId);
+  // console.log(indexOfVoterId, voterId);
   if (indexOfVoterId === -1) {
     throw Error("Your voter id is invalid");
   }
@@ -408,7 +479,7 @@ ElectionSchema.statics.getLatesResults = async function (
   token
 ) {
   // validation
-  console.log(orgCode, electionId, token);
+  // console.log(orgCode, electionId, token);
   if (!orgCode || !electionId || !token) {
     throw Error("All fields are required");
   }
@@ -449,7 +520,7 @@ ElectionSchema.statics.getLatesResults = async function (
 // -------------------------STATIC RESET PASSWORD METHOD-------------------------
 ElectionSchema.statics.getAllElections = async function (orgCode, token) {
   // validation
-  console.log(orgCode, token);
+  // console.log(orgCode, token);
   if (!orgCode || !token) {
     throw Error("All fields are required");
   }
@@ -487,7 +558,7 @@ ElectionSchema.statics.getSingleElection = async function (
   token
 ) {
   // validation
-  console.log(orgCode, electionId, token);
+  // console.log(orgCode, electionId, token);
   if (!orgCode || !token) {
     throw Error("All fields are required");
   }

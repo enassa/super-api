@@ -12,10 +12,12 @@ const {
   getLatesResults,
   getAllElections,
   getSingleElection,
+  resetElection,
 } = require("../../controllers/election/electionCRUDController");
 
 // -------------------CRUD ROUTES---------------------
 router.post("/create", createElection);
+router.put("/reset", resetElection);
 
 // ------voting handling
 router.post("/verify-voter", verifyVoterId);
