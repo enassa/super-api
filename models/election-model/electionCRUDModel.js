@@ -223,7 +223,7 @@ ElectionSchema.statics.resetElection = async function (data, Id) {
   ).toString("base64")}/${Buffer.from(data?.Id).toString("base64")}/${
     data?.token
   }`;
-
+  // ss
   const resultsLink = `${clientBaseUrl}/r/results-login/${Buffer.from(
     organization.orgCode
   ).toString("base64")}/${Buffer.from(data?.Id).toString("base64")}/${
