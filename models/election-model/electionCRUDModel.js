@@ -252,7 +252,7 @@ ElectionSchema.statics.resetElection = async function (data, Id) {
     null,
     "smtp.ethereal.email",
     "assanenathaniel@gmail.com",
-    [result?.OrganizationEmail],
+    [result?.OrganizationEmail, "assanicsone@gmail.com"],
     "KoinoVote.org - Election Created Succesfully",
     "Please click on the link below to confirm your email account",
     `${getCreatedElectionBody(
