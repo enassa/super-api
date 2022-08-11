@@ -233,8 +233,8 @@ ElectionSchema.statics.resetElection = async function (data, Id) {
   let Results = data?.Contestants;
   // create election
   // Move  voterId from unused  to used
-  let unUsedVoterIds = [];
-  let usedVoterIds = data?.VoterIds;
+  let unUsedVoterIds = data?.VoterIds;
+  let usedVoterIds = [];
 
   const updateDoc = {
     $set: {
