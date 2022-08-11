@@ -59,7 +59,7 @@ const sendEmailWithNodeMailer = async (
     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
   } catch (error) {}
 };
-// console.log(JSON.stringify(a));
+// console.log(JSON.stringifsy(a));
 const CREDENTIALS = require("../../config/api-variables");
 const sendEmailWithGoogle = function (
   port,
