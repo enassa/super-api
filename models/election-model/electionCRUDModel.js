@@ -360,6 +360,9 @@ ElectionSchema.statics.castVote = async function (voterData) {
   }
   // validate voter ID
   //is voter id used?
+  if (election.closed === true) {
+    throw Error("This election has been closed");
+  }
 
   if (election?.UsedVoterIds?.includes(voterId)) {
     throw Error("This voter id has been used");
