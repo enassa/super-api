@@ -291,7 +291,9 @@ ElectionSchema.statics.verifyVoterId = async function (
       "An unusual activity has been detected, extra security measures have been applied"
     );
   }
-
+  if (election.closed) {
+    throw Error("This election has been closed");
+  }
   //validate token
   if (token !== election?.token) {
     throw Error(
@@ -360,7 +362,8 @@ ElectionSchema.statics.castVote = async function (voterData) {
   }
   // validate voter ID
   //is voter id used?
-  if (election.closed === true) {
+  console.log(election.closed);
+  if (election.closed) {
     throw Error("This election has been closed");
   }
 
