@@ -114,6 +114,10 @@ const ElectionSchema = new Schema({
     type: String,
     required: false,
   },
+  Closed: {
+    type: Boolean,
+    required: false,
+  },
 });
 
 // ------------------------STATIC SIGNUP METHOD------------------------
