@@ -115,7 +115,10 @@ const clientBaseUrl =
     : "http://localhost:3000";
 
 const password = "PdRuayEfXYBTsi7b";
-const mongPath = `mongodb+srv://enassan:${password}@koinovote.ww6hvut.mongodb.net/?retryWrites=true&w=majority`;
+const mongPath =
+  process.env.NODE_ENV === "production"
+    ? `mongodb+srv://enassan:${password}@koinovote.ww6hvut.mongodb.net/?retryWrites=true&w=majority`
+    : "mongodb://localhost:27017";
 
 module.exports = {
   clientBaseUrl,
