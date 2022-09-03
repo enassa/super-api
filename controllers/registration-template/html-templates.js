@@ -1,4 +1,5 @@
 const path = require("path");
+const { appName } = require("../../config/api-variables");
 
 const getElectionTemplate = (
   user,
@@ -14,15 +15,19 @@ const getElectionTemplate = (
 </body</html>`;
 
 const getRegisterationTemplate = (
-  appUrl = "https://www.koinovoter.web.app.com",
-  confirmUrl
+  confirmUrl,
+  appUrl = "https://www.koinovoter.web.app"
 ) => {
-  const applogo = path.resolve(__dirname + "/images/applogo.png");
-  const facebookImg = path.resolve(__dirname + "/images/facebook.png");
-  const hifiveImg = path.resolve(__dirname + "/images/hifive.png");
-  const whatsapp = path.resolve(__dirname + "/images/whatsapp.png");
-  console.log(applogo);
-
+  const applogo =
+    "https://firebasestorage.googleapis.com/v0/b/koinovote-361416.appspot.com/o/emailtemplateimages%2Fapplogowhite.png?alt=media&token=29b942e8-ecfc-429e-bfea-fa4d2e0379e7";
+  const facebookImg =
+    "https://firebasestorage.googleapis.com/v0/b/koinovote-361416.appspot.com/o/emailtemplateimages%2Ffacebook.png?alt=media&token=6a755bdb-1104-4da6-a0b2-c4bfdddc807e";
+  const hifiveImg =
+    "https://firebasestorage.googleapis.com/v0/b/koinovote-361416.appspot.com/o/emailtemplateimages%2Fhifive.png?alt=media&token=82ccf551-3ad3-4c5d-97b6-c7885e86cae1";
+  const whatsapp =
+    "https://firebasestorage.googleapis.com/v0/b/koinovote-361416.appspot.com/o/emailtemplateimages%2Fwhatsapp.png?alt=media&token=6c31ffd2-5e15-4896-999e-9b8105a9ef45";
+  const facebookUrl = "https://web.facebook.com/profile.php?id=100009019927936";
+  const whatsappUrl = "wa.me/+233501595639";
   return `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -123,67 +128,48 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 
 </head>
 
-<body class="clean-body u_body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #e7e7e7;color: #000000">
+<body class="clean-body u_body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #f9f9f9;color: #000000">
   <!--[if IE]><div class="ie-container"><![endif]-->
   <!--[if mso]><div class="mso-container"><![endif]-->
   <table id="u_body" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #e7e7e7;width:100%" cellpadding="0" cellspacing="0">
   <tbody>
   <tr style="vertical-align: top">
     <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-    <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color: #e7e7e7;"><![endif]-->
-    
+    <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color: #f9f9f9;"><![endif]-->
 
-<div class="u-row-container" style="padding: 0px;background-color: transparent">
+
+
+<div class="u-row-container" style="padding: 0px;background-color: white; box-shadow:0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);">
   <div class="u-row" style="Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
       <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: transparent;"><![endif]-->
       
 <!--[if (mso)|(IE)]><td align="center" width="600" style="background-color: #ffffff;width: 600px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
 <div class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-  <div style="background-color: #ffffff;height: 100%;width: 100% !important;">
+  <div style="background-color: #ffffff;height: 100%;width: 100% !important; margin-top:100px">
   <!--[if (!mso)&(!IE)]><!--><div style="height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;"><!--<![endif]-->
-  
-<table id="u_content_image_1" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+  <table id="u_content_image_1" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
   <tbody>
     <tr>
-      <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:4px 0px 0px;font-family:arial,helvetica,sans-serif;" align="left">
+      <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:4px 0px 0px;font-family:arial,helvetica,sans-serif;background-color:#4B0082" align="left">
         
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr>
-    <td style="padding-right: 0px;padding-left: 0px;" align="left">
-      
-      <img align="left" border="0" src="${applogo}" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 24%;max-width: 144px;" width="144" class="v-src-width v-src-max-width"/>
-      
+    <td style="padding-right: 0px;padding-left: 0px; margin-left:70px; padding-bottom:10px" align="center">
+      &nbsp; &nbsp; &nbsp;
+      <div style="display:inline-flex; align-items:center; margin-top"20px">
+      <img align="left" border="0" src="${applogo}" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 5%;max-width: 80pxpx; margin-right:10px" width="144" class="v-src-width v-src-max-width"/>
+      <div style="font-size:25px;color:white;">
+       <span>Koino<b>Voter</b></span>
+      </div>
+      </div>
     </td>
   </tr>
 </table>
-
       </td>
     </tr>
   </tbody>
 </table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-    </div>
-  </div>
-</div>
-
-
-
-<div class="u-row-container" style="padding: 0px;background-color: transparent">
-  <div class="u-row" style="Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-    <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-      <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: transparent;"><![endif]-->
-      
-<!--[if (mso)|(IE)]><td align="center" width="600" style="background-color: #ffffff;width: 600px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
-<div class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-  <div style="background-color: #ffffff;height: 100%;width: 100% !important;">
-  <!--[if (!mso)&(!IE)]><!--><div style="height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;"><!--<![endif]-->
-  
 <table id="u_content_image_2" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
   <tbody>
     <tr>
@@ -193,7 +179,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <tr>
     <td style="padding-right: 0px;padding-left: 0px;" align="center">
       
-      <img align="center" border="0" src="${hifiveImg} alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 65%;max-width: 390px;" width="390" class="v-src-width v-src-max-width"/>
+      <img align="center" border="0" src="${hifiveImg}" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 65%;max-width: 390px;" width="390" class="v-src-width v-src-max-width"/>
       
     </td>
   </tr>
@@ -230,9 +216,9 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <tr>
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:60px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
         
-  <h1 class="v-line-height v-font-size" style="margin: 0px; color: #1f47b3; line-height: 130%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: 'Montserrat',sans-serif; font-size: 24px;">
+  <h1 class="v-line-height v-font-size" style="margin: 0px; color: #2F2E41; line-height: 130%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: 'Montserrat',sans-serif; font-size: 24px;">
     <div>
-<div><strong>Great!! You are just a step away.<br />Click the confirm button to complete your <br />registeration!</strong></div>
+<div><strong>Great!! You are just a step away.<br />Click the confirm button to complete your <br />registration!</strong></div>
 </div>
   </h1>
 
@@ -247,7 +233,10 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 80px;font-family:arial,helvetica,sans-serif;" align="left">
         
   <div class="v-line-height" style="line-height: 170%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 170%;"><span style="color: #4d0bdb; font-size: 14px; line-height: 23.8px;">Koino</span><span style="color: #1f47b3; font-size: 14px; line-height: 23.8px;"><strong>V</strong><span style="font-size: 14px; line-height: 23.8px;"><strong>ote</strong></span></span> is the first of it's kind in terms of simplicity, security and speed. We burried <em>manual counting</em> of votes yesterday😎. Let's keep it in the grave.</p>
+    <p style="font-size: 14px; line-height: 170%;">
+    <span style="color: #; font-size: 14px; line-height: 23.8px;">
+     KoinoVote
+     </span> is the first of it's kind in terms of simplicity, security and speed. We burried manual counting of votes yesterday😎. Let's keep it in the grave.</p>
   </div>
 
       </td>
@@ -261,9 +250,9 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 40px;font-family:arial,helvetica,sans-serif;" align="left">
         
 <div align="center">
-  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;font-family:arial,helvetica,sans-serif;"><tr><td style="font-family:arial,helvetica,sans-serif;" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${appUrl}" style="height:37px; v-text-anchor:middle; width:174px;" arcsize="11%" stroke="f" fillcolor="#4d0bdb"><w:anchorlock/><center style="color:#FFFFFF;font-family:arial,helvetica,sans-serif;"><![endif]-->
-    <a href="${confirmUrl}" target="_blank" class="v-size-width" style="box-sizing: border-box;display: inline-block;font-family:arial,helvetica,sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #4d0bdb; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:30%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
-      <span class="v-line-height v-padding" style="display:block;padding:10px 20px;line-height:120%;"><p style="font-size: 14px; line-height: 120%;"><span style="font-size: 14px; line-height: 16.8px;">Confirm</span></p></span>
+  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;font-family:arial,helvetica,sans-serif;"><tr><td style="font-family:arial,helvetica,sans-serif;" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${appUrl}" style="height:37px; v-text-anchor:middle; width:174px;" arcsize="11%" stroke="f" fillcolor="#6C63FF"><w:anchorlock/><center style="color:#FFFFFF;font-family:arial,helvetica,sans-serif;"><![endif]-->
+    <a href="${confirmUrl}" target="_blank" class="v-size-width" style="box-sizing: border-box;display: inline-block;font-family:arial,helvetica,sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #4B0082; border-radius: 50px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:30%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
+      <span class="v-line-height v-padding" style="display:block;padding:10px 20px;line-height:120%;"><p style="font-size: 14px; line-height: 120%;"><span style="font-size: 14px; line-height: 16.8px; background-color:#4B0082;border-radius:50px ">Confirm</span></p></span>
     </a>
   <!--[if mso]></center></v:roundrect></td></tr></table><![endif]-->
 </div>
@@ -299,7 +288,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:60px 50px 10px;font-family:arial,helvetica,sans-serif;" align="left">
         
   <div class="v-line-height" style="line-height: 170%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 170%;">If you have any questions, please email us at customer.koinovote@gmail.com or visit our FAQS, you can also chat with a reel live human during our operating hours. They can answer questions about your account</p>
+    <p style="font-size: 14px; line-height: 170%;">If you have any questions, please email us at ${appName} or visit our FAQS, you can also chat with a reel live human during our operating hours. They can answer questions about your account</p>
   </div>
 
       </td>
@@ -340,7 +329,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <!--[if (mso)|(IE)]><td width="32" style="width:32px; padding-right: 15px;" valign="top"><![endif]-->
     <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 15px">
       <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-        <a href="https://facebook.com/" title="Facebook" target="_blank">
+        <a href="$${facebookUrl}" title="Facebook" target="_blank">
           <img src="${facebookImg}" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
         </a>
       </td></tr>
@@ -350,7 +339,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <!--[if (mso)|(IE)]><td width="32" style="width:32px; padding-right: 0px;" valign="top"><![endif]-->
     <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 0px">
       <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-        <a href="https://whatsapp.com/" title="WhatsApp" target="_blank">
+        <a  href="$${whatsappUrl}" title="WhatsApp" target="_blank">
           <img src="${whatsapp}" alt="WhatsApp" title="WhatsApp" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
         </a>
       </td></tr>
@@ -443,7 +432,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 60px 60px;font-family:arial,helvetica,sans-serif;" align="left">
         
   <div class="v-line-height" style="line-height: 170%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 170%;">you have received this email because you filled a form to register an account with <a rel="noopener" href="https://www.koinovoter.web.app" target="_blank">koinovote.</a> If this is not true or it does not make any sense to you. Please ignore this mail.</p>
+    <p style="font-size: 14px; line-height: 170%;">You have received this email because you filled a form to register an account with <a rel="noopener" href="https://www.koinovoter.web.app" target="_blank">KoinoVote.</a> If this is not true or does not sense to you, please ignore this mail.</p>
   </div>
 
       </td>
@@ -508,3 +497,7 @@ module.exports = {
   getElectionTemplate,
   getResetPasswordtemplate,
 };
+{
+  /*
+   */
+}

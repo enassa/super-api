@@ -118,15 +118,13 @@ OrgSchema.statics.register = async function (
     election.email
   ).toString("base64")}/${token}`;
 
+  // "smtp.ethereal.email",
   sendEmailWithGoogle(
-    portNumber,
-    "smtp.ethereal.email",
     CREDENTIALS.appEmail,
     [election.email],
-    "KoinoVote.org - Confirm your account",
-    "Please click on the link below to confirm your email account",
-    `${getRegisterationTemplate(election, resetUrl)}`,
-    election.orgName
+    `Kudos ${election.orgName}, let's confirm your email account`,
+    "Please click on the button below to confirm your email account",
+    `${getRegisterationTemplate(resetUrl)}`
   );
 
   return election;

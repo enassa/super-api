@@ -62,8 +62,6 @@ const sendEmailWithNodeMailer = async (
 // console.log(JSON.stringifsy(a));
 const CREDENTIALS = require("../../config/api-variables");
 const sendEmailWithGoogle = function (
-  port,
-  host,
   senderEmail,
   recipientEmails = [],
   subject,
