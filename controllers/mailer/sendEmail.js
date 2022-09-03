@@ -93,7 +93,7 @@ const sendEmailWithGoogle = function (
         service: "gmail",
         auth: {
           type: "OAuth2",
-          user: "assanenathaniel@Gmail.com",
+          user: CREDENTIALS.appEmail,
           clientId: CLIENT_ID,
           clientSecret: CLIENT_SECRET,
           refreshToken: REFRESH_TOKEN,
@@ -122,6 +122,7 @@ const sendEmailWithGoogle = function (
           },
         ],
       };
+      console.log(!!attachment);
       const results = await transport.sendMail(
         !!attachment ? mailOptionWithAttachment : mailOptionNoAttachment
       );

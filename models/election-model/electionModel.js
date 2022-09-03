@@ -14,6 +14,10 @@ const {
   getRandomInt,
   clientBaseUrl,
 } = require("../../constants");
+const CREDENTIALS = require("../../config/api-variables");
+const {
+  getRegisterationTemplate,
+} = require("../../controllers/registration-template/html-templates");
 
 const OrgSchema = new Schema({
   email: {
@@ -117,11 +121,11 @@ OrgSchema.statics.register = async function (
   sendEmailWithGoogle(
     portNumber,
     "smtp.ethereal.email",
-    "assanenathaniel@gmail.com",
+    CREDENTIALS.appEmail,
     [election.email],
     "KoinoVote.org - Confirm your account",
     "Please click on the link below to confirm your email account",
-    `${getHtmlBody(election, resetUrl, "Confirm your email acount")}`,
+    `${getRegisterationTemplate(election, resetUrl)}`,
     election.orgName
   );
 
@@ -212,7 +216,7 @@ OrgSchema.statics.forgotPassword = async function (email, portNumber) {
   sendEmailWithGoogle(
     portNumber,
     "smtp.ethereal.email",
-    "assanenathaniel@gmail.com",
+    CREDENTIALS.appEmail,
     ["assanicsone@gmail.com"],
     "KoinoVote - Password reset link",
     "This is the email text body",

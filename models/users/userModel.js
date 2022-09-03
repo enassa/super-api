@@ -93,7 +93,7 @@ userSchema.statics.forgotPassword = async function (
   sendEmailWithGoogle(
     portNumber,
     "smtp.ethereal.email",
-    "assanenathaniel@gmail.com",
+    "koinovote@gmail.com",
     ["assanicsone@gmail.com"],
     "KoinoVote - Password reset link",
     "This is the email text body",

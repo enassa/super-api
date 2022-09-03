@@ -28,6 +28,7 @@ Array.prototype.mySwapDelete = function arrayMySwapDelete(index) {
 const OrgSchema = require("./electionModel");
 const { findById } = require("./electionModel");
 const { createComplexPdf } = require("../../utils/pdfMaker");
+const CREDENTIALS = require("../../config/api-variables");
 const ElectionSchema = new Schema({
   Id: {
     type: String,
@@ -184,7 +185,7 @@ ElectionSchema.statics.createElection = async function (data) {
   sendEmailWithGoogle(
     null,
     "smtp.ethereal.email",
-    "assanenathaniel@gmail.com",
+    CREDENTIALS.appEmail,
     [election.OrganizationEmail],
     "KoinoVote.org - Election Created Succesfully",
     "Please click on the link below to confirm your email account",
@@ -255,7 +256,7 @@ ElectionSchema.statics.resetElection = async function (data, Id) {
   sendEmailWithGoogle(
     null,
     "smtp.ethereal.email",
-    "assanenathaniel@gmail.com",
+    CREDENTIALS.appEmail,
     [result?.OrganizationEmail, "assanicsone@gmail.com"],
     "KoinoVote.org - Election Created Succesfully",
     "Please click on the link below to confirm your email account",
