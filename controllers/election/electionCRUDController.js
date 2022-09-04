@@ -1,5 +1,6 @@
 // ---------------ELECTION AND VOTING CONTROLLERS--------------
 const ElectionSchema = require("../../models/election-model/electionCRUDModel");
+// const sdk = require("api")("@rebrandly/v1#1vnxn1nokworcvdu");
 
 const createElection = async (req, res) => {
   const { electionData } = req.body;
@@ -179,6 +180,14 @@ const castVote = async (req, res) => {
     });
   }
 };
+
+// const shortenUrl = (url) => {
+//   sdk.auth("a0897529150f4500b308cb31e325b47d");
+//   sdk
+//     .getAccount()
+//     .then((res) => res)
+//     .catch((err) => err);
+// };
 module.exports = {
   createElection,
   verifyVoterId,
@@ -188,4 +197,5 @@ module.exports = {
   getAllElections,
   getSingleElection,
   resetElection,
+  // shortenUrl,
 };

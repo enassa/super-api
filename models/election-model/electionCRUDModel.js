@@ -29,6 +29,9 @@ const OrgSchema = require("./electionModel");
 const { findById } = require("./electionModel");
 const { createComplexPdf } = require("../../utils/pdfMaker");
 const CREDENTIALS = require("../../config/api-variables");
+const {
+  getElectionTemplate,
+} = require("../../controllers/registration-template/html-templates");
 const ElectionSchema = new Schema({
   Id: {
     type: String,
@@ -181,15 +184,13 @@ ElectionSchema.statics.createElection = async function (data) {
     VotingLink: votingLink,
     ResultsLink: resultsLink,
   });
-
+  console.log("about to  create elections");
   sendEmailWithGoogle(
-    null,
-    "smtp.ethereal.email",
     CREDENTIALS.appEmail,
     [election.OrganizationEmail],
-    "KoinoVote.org - Election Created Succesfully",
-    "Please click on the link below to confirm your email account",
-    `${getCreatedElectionBody(
+    "Election created succesfully",
+    "Please find  the relevant info below for your election",
+    `${getElectionTemplate(
       votingLink,
       resultsLink,
       election?.Title,

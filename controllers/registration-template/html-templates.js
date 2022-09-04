@@ -1,19 +1,6 @@
 const path = require("path");
 const { appName, appEmail } = require("../../config/api-variables");
 
-const getElectionTemplate = (
-  user,
-  resetUrl,
-  header,
-  name,
-  appUrl
-) => `<html><body> 
-<h1 style='color:green'>Koinovote.org - ${header || "Password reset"}</h1>
-<p > Hi ${name || user.email},</p>
-<p>Please click on the link below to reset your password. Please note that the link will expire in 15 minutes.</p>
-<p'> Reset your password:  ${resetUrl}</p>
-</body</html>`;
-
 const getRegisterationTemplate = (
   confirmUrl,
   appUrl = "https://www.koinovoter.web.app"
@@ -896,34 +883,115 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 `;
 };
 
-// const getResetPasswordtemplate = (
-//   votinglink,
-//   resultsLink,
-//   electionTitle,
-//   password
-// ) => `
-// <html>
-//   <body>
-//     <h1 style="color:green;">Election info</h1>
-//     <div style="display:flex;">
-//       <strong>Title of election: </strong>
-//       <span> ${electionTitle}</span>
-//     </div>
-//     <div style="display:flex;">
-//       <strong>Voting link: </strong>
-//       <span> ${votinglink}</span>
-//     </div>
-//     <div style="display:flex;">
-//       <strong>Results link:</strong>
-//       <span> ${resultsLink}</span>
-//     </div>
-//     <div style="display:flex;">
-//       <strong>Password to results page:</strong>
-//       <span> ${password}</span>
-//     </div>
-//   </body>
-// </html>
-// `;
+const getElectionTemplate = (
+  votinglink,
+  resultsLink,
+  electionTitle,
+  electionPassword,
+  appUrl = "koinovoter.web.app"
+) => `
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Font Awesome Icons</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <style>
+      .copy-icon:hover {
+          color: indigo;
+          transform: scale(1.1);
+          transition: all 0.22s ease;
+      }
+  </style>
+  <body style="background-color:; width:100%; display:inline-flex; margin:0px; flex-direction:row; justify-content:center;">
+  <table width="100%" align="center">
+  <tr>
+    <td>
+  <table style="width:100%; background-color:indigo; height:100px;">
+    <tr style="width:100%" align="center">
+      <td style="width:100%" align="center">
+        <div>
+<img border="0" style="width:5%" src="https://firebasestorage.googleapis.com/v0/b/koinovote-361416.appspot.com/o/emailtemplateimages%2Fapplogowhite.png?alt=media&token=29b942e8-ecfc-429e-bfea-fa4d2e0379e7" alt="image" title="image" style=";" width="144" class="v-src-width v-src-max-width" />
+      <div style="font-size:25px;color:white;margin-left:10px">
+          <span>Koino<b>Vote</b></span>
+      </div>
+  </div>
+      </td>
+      </tr>
+  </table>
+    </td>
+</tr>
+  <tr style="width:100%; height:100px; background-color:;" >
+    <td style="width:100%; ">
+      <table style="width:100%;  border-collapse: collapse;" align="center">
+        <tr><td>.</td></tr>
+        <tr width="100%" align="center"><td><h2>${electionTitle}</h2></td></tr>
+        <tr style="width:100%; background-color:#F6F8FA">
+          <td style="width:100%;">
+        <div  
+            style="padding:10px; text-overflow:ellipsis; width:90%;  overflow-x:hidden; background-color:#F6F8FA"
+            >
+              <h3 style="margin:0px; color:indigo;">
+                Results screen:
+              </h3>
+              <input
+              id="results-link"
+              disabled
+              style=" text-overflow:ellipsis; width:90%;  overflow-x:hidden; ackground-color:#F6F8FA; border-radius:10px;border:0px" value="https:dsas.sdsa./ddsda.sd/sasda.sd/sasda.sd/sa">
+              <br/>
+              <strong style="font-size:11; font-weight:300; color:#333;">Password: <b>${electionPassword}</b></strong>
+            </div> 
+           </td>
+          <td>
+            <a href="${resultsLink}"  
+              style="cursor:pointer;margin-right:10px; padding:10px 20px; border-radius:100px; background-color:indigo; color:white; text-decoration:none;  white-space:nowrap"
+            >
+             Open
+            </button>
+          </td>
+        </tr>
+        <tr><td>.</td></tr>
+
+        <tr style="width:100%; background-color:#F6F8FA;">
+          <td tyle="width:%;">
+        <div  
+            style="padding:10px; text-overflow:ellipsis; width:90%;  overflow-x:hidden; background-color:#F6F8FA;"
+            >
+              <h3 style="margin:0px; color:indigo;">
+                Voting screen:
+              </h3>
+              htt  <input
+              id="voting-link"
+              disabled
+              style=" text-overflow:ellipsis; width:90%;  overflow-x:hidden; ackground-color:#F6F8FA; border-radius:10px;border:0px" value="https:dsas.sdsa./ddsda.sd/sasda.sd/sasda.sd/sa">
+              <br/>
+            <!--  <strong>Password: election2022</strong> -->
+            </div> 
+           </td>
+          <td>
+            <a href="${votinglink}"  
+            style="cursor:pointer;margin-right:10px; padding:10px 20px; border-radius:100px; background-color:indigo; color:white; text-decoration:none;  white-space:nowrap"
+            >
+            Open
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+          <h5>Please find attached to this mail a pdf containing your  <b>Voter Ids</b>.</h5>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+        <br/>
+        <br/>
+        
+  </body>
+</html>
+`;
 
 // const getResetPasswordtemplate = (
 //   user,
