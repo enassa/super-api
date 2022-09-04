@@ -17,6 +17,7 @@ const {
 const CREDENTIALS = require("../../config/api-variables");
 const {
   getRegisterationTemplate,
+  getResetPasswordtemplate,
 } = require("../../controllers/registration-template/html-templates");
 
 const OrgSchema = new Schema({
@@ -212,13 +213,11 @@ OrgSchema.statics.forgotPassword = async function (email, portNumber) {
   ).toString("base64")}/${token}`;
 
   sendEmailWithGoogle(
-    portNumber,
-    "smtp.ethereal.email",
     CREDENTIALS.appEmail,
-    ["assanicsone@gmail.com"],
-    "KoinoVote - Password reset link",
-    "This is the email text body",
-    `${getHtmlBody(election, resetUrl, undefined, election?.orgName)}`
+    [election.email],
+    `Password reset for ${election.orgName}`,
+    "Please click on the button below to reset your password",
+    `${getResetPasswordtemplate(resetUrl)}`
   );
   return { email: election.email, link: resetUrl };
 };
