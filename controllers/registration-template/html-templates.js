@@ -1,5 +1,5 @@
 const path = require("path");
-const { appName } = require("../../config/api-variables");
+const { appName, appEmail } = require("../../config/api-variables");
 
 const getElectionTemplate = (
   user,
@@ -288,7 +288,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:60px 50px 10px;font-family:arial,helvetica,sans-serif;" align="left">
         
   <div class="v-line-height" style="line-height: 170%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 170%;">If you have any questions, please email us at ${appName} or visit our FAQS, you can also chat with a reel live human during our operating hours. They can answer questions about your account</p>
+    <p style="font-size: 14px; line-height: 170%;">If you have any questions, please email us at ${appEmail} or visit our FAQS, you can also chat with a reel live human during our operating hours. They can answer questions about your account</p>
   </div>
 
       </td>
@@ -721,7 +721,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:60px 50px 10px;font-family:arial,helvetica,sans-serif;" align="left">
         
   <div class="v-line-height" style="line-height: 170%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 170%;">If you have any questions, please email us at ${appName} or visit our FAQS, you can also chat with a reel live human during our operating hours. They can answer questions about your account</p>
+    <p style="font-size: 14px; line-height: 170%;">If you have any questions, please email us at ${appEmail} or visit our FAQS, you can also chat with a reel live human during our operating hours. They can answer questions about your account</p>
   </div>
 
       </td>
