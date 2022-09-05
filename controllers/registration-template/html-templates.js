@@ -938,7 +938,7 @@ const getElectionTemplate = (
               <input
               id="results-link"
               disabled
-              style=" text-overflow:ellipsis; width:90%;  overflow-x:hidden; ackground-color:#F6F8FA; border-radius:10px;border:0px" value="https:dsas.sdsa./ddsda.sd/sasda.sd/sasda.sd/sa">
+              style=" text-overflow:ellipsis; width:90%;  overflow-x:hidden; ackground-color:#F6F8FA; border-radius:10px;border:0px" value=${resultsLink}">
               <br/>
               <strong style="font-size:11; font-weight:300; color:#333;">Password: <b>${electionPassword}</b></strong>
             </div> 
@@ -964,7 +964,7 @@ const getElectionTemplate = (
               htt  <input
               id="voting-link"
               disabled
-              style=" text-overflow:ellipsis; width:90%;  overflow-x:hidden; ackground-color:#F6F8FA; border-radius:10px;border:0px" value="https:dsas.sdsa./ddsda.sd/sasda.sd/sasda.sd/sa">
+              style=" text-overflow:ellipsis; width:90%;  overflow-x:hidden; ackground-color:#F6F8FA; border-radius:10px;border:0px" value="${votinglink}">
               <br/>
             <!--  <strong>Password: election2022</strong> -->
             </div> 
