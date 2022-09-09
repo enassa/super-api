@@ -9,13 +9,14 @@ const createToken = (_id) => {
 };
 
 const signUpUser = async (req, res) => {
-  const { email, password, orgName, contact } = req.body;
+  const { email, password, orgName, contact, library } = req.body;
   try {
     const election = await OrgSchema.register(
       email,
       password,
       orgName,
       contact,
+      library,
       req.socket.localPort
     );
     // create token
@@ -79,6 +80,7 @@ const loginUser = async (req, res) => {
         email: election.email,
         orgName: election.orgName,
         orgCode: election.orgCode,
+        library: election.library,
       },
     });
   } catch (error) {

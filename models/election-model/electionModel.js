@@ -64,6 +64,10 @@ const OrgSchema = new Schema({
     type: String,
     required: true,
   },
+  library: {
+    type: Object,
+    required: true,
+  },
 });
 
 // ------------------------STATIC SIGNUP METHOD------------------------
@@ -72,6 +76,7 @@ OrgSchema.statics.register = async function (
   password,
   orgName,
   contact,
+  library,
   portNumber
 ) {
   // Validation
@@ -113,6 +118,7 @@ OrgSchema.statics.register = async function (
     contact,
     confirmToken: token,
     password: hashPassword,
+    library,
   });
   // send reset url
   const resetUrl = `${clientBaseUrl}/confirm/${Buffer.from(
